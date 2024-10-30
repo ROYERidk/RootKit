@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -9,6 +10,7 @@ int main()
 {
     printf("ECOLE 2600 MY INIT\n");
     syscall(MY_SYSCALL_NUMBER);
+    system("insmod hacking/first_module/w3.ko");
     while (2600)
     {
         pid_t pid = fork();
