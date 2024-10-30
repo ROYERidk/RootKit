@@ -1,0 +1,1 @@
+savedcmd_/home/dan/Documents/RootKit/initramfs/hacking/first_module/w3.mod := printf '%s\n'   w3.o | awk '!x[$$0]++ { print("/home/dan/Documents/RootKit/initramfs/hacking/first_module/"$$0) }' > /home/dan/Documents/RootKit/initramfs/hacking/first_module/w3.mod

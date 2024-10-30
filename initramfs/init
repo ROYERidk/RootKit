@@ -5,7 +5,7 @@ mount -t sysfs none /sys
 mount -t devtmpfs none /dev
 cat <<!
 
-Boot took 4311.41 seconds
+Boot took 4366.24 seconds
 Welcome to your Linux
 !
 /init_loop
