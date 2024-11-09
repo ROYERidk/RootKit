@@ -1,8 +1,0 @@
-alpine-baselayout
-alpine-keys
-apk-tools
-build-base
-busybox
-libc-utils
-openrc
-util-linux
