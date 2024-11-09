@@ -12,6 +12,8 @@ WORKDIR="./vm"
 
 # Disk configuration
 DISK_IMG="$WORKDIR/disk.img"
+ROOTFS_DIR="$WORKDIR/my-rootfs"
+BOOT_DIR="$ROOTFS_DIR/boot"
 LOOP_DEVICE=""
 
 # Check if the vm folder already exists
@@ -40,12 +42,12 @@ echo "[+] Formatting partition as ext4..."
 sudo mkfs.ext4 "${LOOP_DEVICE}p1"
 
 echo "[+] Mounting partition..."
-mkdir -p vm/my-rootfs
-sudo mount "${LOOP_DEVICE}p1" vm/my-rootfs
-sudo chown -R "$USER:$USER" vm/my-rootfs
+mkdir -p "$ROOTFS_DIR"
+sudo mount "${LOOP_DEVICE}p1" "$ROOTFS_DIR"
+sudo chown -R "$USER:$USER" "$ROOTFS_DIR"
 
 echo "[+] Installing minimal Alpine Linux..."
-docker run -it --rm --volume /home/dan/Documents/alpine_rootkit/vm/my-rootfs:/my-rootfs alpine sh -c '
+docker run -it --rm --volume "$ROOTFS_DIR":/my-rootfs alpine sh -c '
     apk add openrc util-linux build-base;
     ln -s agetty /etc/init.d/agetty.ttyS0
     echo ttyS0 > /etc/securetty
@@ -60,11 +62,11 @@ docker run -it --rm --volume /home/dan/Documents/alpine_rootkit/vm/my-rootfs:/my
 '
 
 echo "[+] Copying Kernel source to rootfs..."
-mkdir -p vm/my-rootfs/boot 
-sudo cp linux/arch/x86/boot/bzImage vm/my-rootfs/boot/vmlinuz
+mkdir -p "$BOOT_DIR"
+sudo cp linux/arch/x86/boot/bzImage "$BOOT_DIR/vmlinuz"
 
 echo "[+] Configuring GRUB..."
-sudo mkdir -p vm/my-rootfs/boot/grub
+sudo mkdir -p "$BOOT_DIR/grub"
 
 sudo bash -c 'cat <<EOF > "./vm/my-rootfs/boot/grub/grub.cfg"
 set default=0
@@ -78,11 +80,11 @@ menuentry "ldk-kit" {
 }
 EOF'
 
-echo "[+] Installing GRUB in /home/dan/Documents/alpine_rootkit/vm/my-rootfs/boot through ${LOOP_DEVICE}p1"
-sudo grub-install --directory=/usr/lib/grub/i386-pc --boot-directory=/home/dan/Documents/alpine_rootkit/vm/my-rootfs/boot "$LOOP_DEVICE"
+echo "[+] Installing GRUB in "$BOOT_DIR" through ${LOOP_DEVICE}p1"
+sudo grub-install --directory=/usr/lib/grub/i386-pc --boot-directory="$BOOT_DIR" "$LOOP_DEVICE"
 
 echo "[+] Cleaning up..."
-sudo umount vm/my-rootfs
+sudo umount "$ROOTFS_DIR"
 sudo losetup -d "$LOOP_DEVICE"
 
 echo "[*] Disk image created successfully at /home/dan/Documents/alpine_rootkit/"$DISK_IMG""
