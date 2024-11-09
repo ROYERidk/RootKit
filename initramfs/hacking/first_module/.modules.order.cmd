@@ -1,1 +1,0 @@
-savedcmd_/home/dan/Documents/RootKit/initramfs/hacking/first_module/modules.order := {   echo /home/dan/Documents/RootKit/initramfs/hacking/first_module/w3.o; :; } > /home/dan/Documents/RootKit/initramfs/hacking/first_module/modules.order

@@ -1,1 +1,0 @@
-savedcmd_/home/dan/Documents/RootKit/initramfs/hacking/first_module/Module.symvers :=  scripts/mod/modpost -M        -o /home/dan/Documents/RootKit/initramfs/hacking/first_module/Module.symvers -n -T /home/dan/Documents/RootKit/initramfs/hacking/first_module/modules.order -i Module.symvers -e 
