@@ -1,4 +1,4 @@
-# RootKit
+# RootKit [outdated]
 
 - Réalisation d'un rootkit sous forme de Linux Kernel Module
 - Automatisation de la création d'un système LFS pour tester le rootkit
