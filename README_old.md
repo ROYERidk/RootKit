@@ -1,7 +1,7 @@
 # RootKit [outdated]
 
 - Réalisation d'un rootkit sous forme de Linux Kernel Module
-- Automatisation de la création d'un système LFS pour tester le rootkit
+- Automatisation de la création d'un système LFS Alpine pour tester le rootkit
 - Comprehension et implémentation des mécanismes de camouflage
 - Mise en place de la persistence du rootkit
 
