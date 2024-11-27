@@ -54,11 +54,16 @@ docker run -it --rm --volume "$ROOTFS_DIR":/my-rootfs alpine sh -c '
     rc-update add agetty.ttyS0 default
     rc-update add root default
     echo "root:" | chpasswd;
+    adduser -D -s /bin/sh user;
+    echo "user:user" | chpasswd;
     rc-update add devfs boot;
     rc-update add procfs boot;
     rc-update add sysfs boot;
     for d in bin etc lib root sbin usr; do tar c "/$d" | tar x -C /my-rootfs; done;
     for dir in dev proc run sys var; do mkdir -p /my-rootfs/${dir}; done
+    printf \"#!/sbin/openrc-run\ncommand="/sbin/modprobe"\ncommand_args="ldk-kit"\n\" > /etc/init.d/ldk-kitL;
+    chmod +x /etc/init.d/ldk-kitL;
+    rc-update add ldk-kitL default;
 '
 
 echo "[+] Copying Kernel source to rootfs..."
@@ -86,5 +91,8 @@ sudo grub-install --directory=/usr/lib/grub/i386-pc --boot-directory="$BOOT_DIR"
 echo "[+] Cleaning up..."
 sudo umount "$ROOTFS_DIR"
 sudo losetup -d "$LOOP_DEVICE"
+
+share_folder="/tmp/qemu-share"
+mkdir -p $share_folder
 
 echo "[*] Disk image created successfully at /home/dan/Documents/alpine_rootkit/"$DISK_IMG""
