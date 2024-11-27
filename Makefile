@@ -16,7 +16,7 @@ INSTALL_MOD_PATH ?= $(VM)/my-rootfs
 
 default:
 	@echo "[+] Compiling module"
-	$(MAKE) ARCH=$(ARCH) -C $(KDIR) M=$(MDIR) modules
+	$(MAKE) ARCH=$(ARCH) KCFLAGS=-Wno-error -C $(KDIR) M=$(MDIR) modules
 
 first-time-setup:
 	@echo "[+] Configuring kernel"

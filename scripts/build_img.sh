@@ -53,7 +53,7 @@ docker run -it --rm --volume "$ROOTFS_DIR":/my-rootfs alpine sh -c '
     echo ttyS0 > /etc/securetty
     rc-update add agetty.ttyS0 default
     rc-update add root default
-    echo "root:" | chpasswd;
+    echo "root:root" | chpasswd;
     adduser -D -s /bin/sh user;
     echo "user:user" | chpasswd;
     rc-update add devfs boot;

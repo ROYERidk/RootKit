@@ -26,14 +26,28 @@ Si c'est la première fois:
 Sinon
   - make Kernel
 
-#### 3. Compiler les modules
+#### 3. Compiler le rootkit
 
-Les modules au format *.c* doivent-être placés dans la racine du répertoire
-`make module` compilera les modules en *.ko* avec le noyau linux de la VM pour qu'il n'y ai pas de problèmes de compatibilités entre la compilation sur notre machine et l'utilisation du module sur notre VM. 
+Le rootkit au format *.c* nommé *ldk-kit.c* doit-être placé dans la racine du répertoire
 
+`make module` compilera le rootkit en *.ko* avec le noyau linux de la VM pour qu'il n'y ai pas de problèmes de compatibilités entre la compilation sur notre machine et l'utilisation du module sur notre VM. 
 
 #### 4. Creation de l'image disque et lancement de la VM
 
 `make disk` va crée l'image disque, si le dossier *vm* n'est pas dans la racine de votre dépôt crée le avant.
 `make vm` va regarder si l'image existe pour pouvoir lancé la vm, si oui il boot la vm avec QEMU sinon il crée l'image disque puis boot la vm.
 
+#### 5. Login
+
+root:root
+user:user
+
+#### 6. Dossier partagé HOST/VM
+
+Pour pouvoir simuler l'injection d'un rootkit nous utilisons un fichié partagé entre notre machine et notre vm.
+
+1. mettre notre rootkit dans `/tmp/qemu-share` pour l'envoyer sur la vm
+2. lancer la VM
+3. `mkdir /shared`
+4. `mount -t 9p -o trans=virtio share /shared`
+5. insmod /shared/ldk-kit.ko
