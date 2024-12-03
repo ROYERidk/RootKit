@@ -95,4 +95,4 @@ sudo losetup -d "$LOOP_DEVICE"
 share_folder="/tmp/qemu-share"
 mkdir -p $share_folder
 
-echo "[*] Disk image created successfully
+echo "[*] Disk image created successfully"
