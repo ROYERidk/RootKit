@@ -31,9 +31,13 @@ Ce rapport détaille nos choix techniques, la mise en œuvre du rootkit, ainsi q
 ### 3. Concepts et Architecture du Rootkit  
 #### 3.1 Fonctionnalités prévues
 
-Reverse shell, keylogger et misc divice (à developper)
+(à developper)
+- Reverse shell
+- keylogger
+- misc divice
+(à developper)
 
-#### 3.3 Scénarios crédibles d’accès initial
+#### 3.3 Scénarios d’accès initial
 
 Pour la démonstration de notre rootkit nous utilisons un fichier partagé entre la VM Alpine et la machine hôte. Cela mime une intrusion physique qui se conclu en une clé USB branché sur une machine.
 
@@ -65,6 +69,7 @@ La vm est lancée à l'aide de *make vm* qui appelle *make disk* puis le script 
 ### 5. **Conception Technique**  
 #### 5.1 Techniques de camouflage  
 Manu ? Theo ?
+
 #### 5.2 Mécanisme de persistance
 Manu ?
 
