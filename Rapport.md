@@ -38,13 +38,29 @@ Reverse shell, keylogger et misc divice (à developper)
 Pour la démonstration de notre rootkit nous utilisons un fichier partagé entre la VM Alpine et la machine hôte. Cela mime une intrusion physique qui se conclu en une clé USB branché sur une machine.
 
 ### 4. **Environnement de Développement**
-
 #### 4.1 Arborescence du projet
-#### 4.2 Configuration la VM LFS Alpine
 
-#### 4.3 Compilation des modules
+***SCHEMA***
 
-#### 4.4 Lancement de la VM
+#### 4.2 Configuration et compilation du Kernel Linux
+Lors de la première utilisation le Kernel à besoin d'être configuré puis compilé, c'est pour cela qu'il est mis en place un *make first-time-setup*.
+
+Si il est seulement nécessaire de compilé le Kernel, un *make kernel* suffira.
+
+#### 4.3 Configuration de la VM LFS Alpine
+
+La VM LFS Alpine est configurée automatiquement grâce au script *build_img.sh* qui peut être appelé de deux manières avec le Makefile:
+- make disk : Regarde si l'image disque *disk.img* existe déjà, si oui il ne fait rien. Sinon, il crée cette dernière.
+- make vm : Appelle *make disk* puis le script *boot.sh* pour lancer la VM.
+
+#### 4.4 Compilation des modules
+Il est important que notre rootkit soit compilé avec le Kernel correspondant à notre VM sous peine que les modules de notre
+Rootkit se trouvent incompatible avec la machine qu'elle infecte.
+C'est pour cela que notre Makefile permet de compiler facilement et avec le bon Kernel notre Rootkit. A l'aide de *make default* nos modules au format *.c* situé à la racine du projet seront compilés correctement.
+
+#### 4.5 Lancement de la VM
+La vm est lancée à l'aide de *make vm* qui appelle *make disk* puis le script *boot.sh* pour lancer la VM.
+
 
 ### 5. **Conception Technique**  
 #### 5.1 Techniques de camouflage  
@@ -53,19 +69,20 @@ Manu ? Theo ?
 Manu ?
 
 ### 6. **Limites et Améliorations Potentielles**  
-#### 6.1 Problèmes rencontrés et solutions apportées  
+#### 6.1 Problèmes rencontrés et solutions apportées 
 
-Aucun membres du groupe n'avais de notion avant le cours de conception d'un rootkit et plusieurs membres ne sont pas très à l'aise en programmation alors nous avons dû nous adapter.
+nous avons démarrer notre projet en utilisant une VM busybox. Mais, nous nous sommes rendu compte qu'un LFS Alpine nous conviendrait mieux. Notamment au niveau de la gestion des droits utilisateurs.
+
+Aucun membres du groupe n'avais de notion avant le cours de conception d'un rootkit et plusieurs membres ne sont pas très à l'aise en programmation alors nous avons dû nous adapter. Nous avons débuté ce projet par l'étude de rootkit déjà existant ainsi que leur fonctionnement.
 
 #### 6.2 Perspectives d’amélioration
 
 Nous sommes conscient que le module de reverse shell est visible de *tel ou tel manière* et nous aurions pu le camoufler de *tel manière*.
 
-### 7. **Documentation et Utilisation**
-#### 7.1 Manuel utilisateur
-#### 7.2 Informations sur les comptes (root et utilisateur)
+### 7 Informations sur les comptes (root et utilisateur)
 root:root
 user:user
+
 ### 8 **Conclusion**  
 #### 8.1 Bilan du projet  
 #### 8.2 Apports pédagogiques
