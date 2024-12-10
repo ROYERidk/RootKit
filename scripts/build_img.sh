@@ -48,7 +48,7 @@ sudo chown -R "$USER:$USER" "$ROOTFS_DIR"
 
 echo "[+] Installing minimal Alpine Linux..."
 docker run -it --rm --volume "$ROOTFS_DIR":/my-rootfs alpine sh -c '
-    apk add openrc util-linux build-base;
+    apk add openrc util-linux build-base python3;
     ln -s agetty /etc/init.d/agetty.ttyS0
     echo ttyS0 > /etc/securetty
     rc-update add agetty.ttyS0 default
