@@ -21,21 +21,20 @@ Ce rapport détaille nos choix techniques, la mise en œuvre du rootkit, ainsi q
 ### 2. Organisation du Projet
 #### 2.1 Tableau de répartition des tâches, des rôles et du travail fournis
 
-| Nom     | Tâche                                                                                             | Rôle | Travail fournis |
-| ------- | ------------------------------------------------------------------------------------------------- | ---- | --------------- |
-| Pierre  | Création de l'environnement de developpement, rédaction du rapport et création de la présentation |      | %               |
-| Manu    | Création d'un module reverse shell, camouflage et persistance du Rootkit                          |      | %               |
-| Anthony | Création d'un module de reverse shell, camouflage et persistance du Rootkit                       |      | %               |
-| Théo    | Création d'un module de keylogger                                                                 |      | %               |
+| Nom     | Tâche                                                                                                                  | Rôle | Travail fournis |
+| ------- | ---------------------------------------------------------------------------------------------------------------------- | ---- | --------------- |
+| Pierre  | Création de l'environnement de developpement, rédaction des parties communes du rapport et création de la présentation |      | %               |
+| Manu    | Création d'un module reverse shell, camouflage et persistance du Rootkit                                               |      | %               |
+| Anthony | Création d'un module de reverse shell, camouflage et persistance du Rootkit                                            |      | %               |
+| Théo    | Création d'un module de keylogger                                                                                      |      | %               |
 
 ### 3. Concepts et Architecture du Rootkit  
-#### 3.1 Fonctionnalités prévues
+#### 3.1 Fonctionnalités
 
 (à developper)
 - Reverse shell
 - misc divice
 - keylogger
-(à developper)
 
 #### 3.3 Scénarios d’accès initial
 
@@ -68,10 +67,10 @@ La vm est lancée à l'aide de *make vm* qui appelle *make disk* puis le script 
 
 ### 5. **Conception Technique**  
 #### 5.1 Techniques de camouflage  
-Manu ? Theo ?
+Manu ? Anthony ?
 
 #### 5.2 Mécanisme de persistance
-Manu ?
+Manu ? Anthony ?
 
 ### 6. **Limites et Améliorations Potentielles**  
 #### 6.1 Problèmes rencontrés et solutions apportées 
@@ -85,9 +84,27 @@ Aucun membres du groupe n'avais de notion avant le cours de conception d'un root
 Nous sommes conscient que le module de reverse shell est visible de *tel ou tel manière* et nous aurions pu le camoufler de *tel manière*.
 
 ### 7 Informations sur les comptes (root et utilisateur)
+Nous avons deux utilisateur, un administrateur *root* avec tous les droits et un utilisateur *user* 
+
+#### 7.1 Identifiants
 root:root
 user:user
 
-### 8 **Conclusion**  
-#### 8.1 Bilan du projet  
-#### 8.2 Apports pédagogiques
+### 8 Difficultés rencontrés
+
+#### 8.1 Compilation des modules
+
+Dans un premier temps nous pensions compiler les modules sur notre machine de travail pour les envoyé à la VM tel quel. Malheuresement nous nous sommes vite rendu compte que cela pose des problèmes de compatibilité. Nous avons donc crée dans le Makefile une ligne pour compiler automatiquement avec le Kernel de notre VM notre Rootkit.
+
+#### 8.2 f_trace_helper
+Nous avons voulu utiliser f_trace_helper, malheuresement nous nous sommes rendu compte que dans les versions récentes de Linux ce n'est plus possible. En effet, cela à été retiré/modifier pour des raisons de sécurité.
+Après quelques recherches nous avons trouvé kprobe qui permet de hook relativement facilement des appels systèmes.
+
+### 8 **Bilan du projet**
+
+Le développement de notre rootkit Linux s’est avéré être un défi technique et pédagogique enrichissant. Nous avons réussi à concevoir un rootkit fonctionnel répondant aux exigences fixées. De plus, ce projet nous a permis d'approfondir nos connaissances sur les mécanismes internes du noyau Linux.
+
+Sur le plan pédagogique, ce projet nous a permis d’acquérir et de consolider plusieurs compétences :
+- Compréhension du noyau Linux
+- Résolution de problèmes
+- Documentation et communication
