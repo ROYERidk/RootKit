@@ -12,7 +12,7 @@ Ces scripts fonctionnent sur une architecture Arch Linux, si vous êtes sur debi
 
 #### 1. Cloner le dépôt avec les sous-modules
 
-L'utilisation des sous-modules Git nous permet d'inclure les sources du noyau Linux et de BusyBox.
+L'utilisation des sous-modules Git nous permet d'inclure les sources du noyau Linux.
 ```bash
 git clone --recurse-submodules git@github.com:ROYERidk/RootKit.git
 cd my_rootkit
@@ -30,7 +30,7 @@ Sinon
 
 Le rootkit au format *.c* nommé *ldk-kit.c* doit-être placé dans la racine du répertoire
 
-`make module` compilera le rootkit en *.ko* avec le noyau linux de la VM pour qu'il n'y ai pas de problèmes de compatibilités entre la compilation sur notre machine et l'utilisation du module sur notre VM. 
+`make default` compilera le rootkit en *.ko* avec le noyau linux de la VM pour qu'il n'y ai pas de problèmes de compatibilités entre la compilation sur notre machine et l'utilisation du module sur notre VM. 
 
 #### 4. Creation de l'image disque et lancement de la VM
 
