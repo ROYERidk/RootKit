@@ -24,8 +24,8 @@ Ce rapport détaille nos choix techniques, la mise en œuvre du rootkit, ainsi q
 | Nom     | Tâche                                                                                             | Rôle | Travail fournis |
 | ------- | ------------------------------------------------------------------------------------------------- | ---- | --------------- |
 | Pierre  | Création de l'environnement de developpement, rédaction du rapport et création de la présentation |      | %               |
-| Manu    | Création du module reverse shell, camouflage et persistance du Rootkit                            |      | %               |
-| Anthony | Création d'un module de ...                                                                       |      | %               |
+| Manu    | Création d'un module reverse shell, camouflage et persistance du Rootkit                          |      | %               |
+| Anthony | Création d'un module de reverse shell, camouflage et persistance du Rootkit                       |      | %               |
 | Théo    | Création d'un module de keylogger                                                                 |      | %               |
 
 ### 3. Concepts et Architecture du Rootkit  
@@ -33,8 +33,8 @@ Ce rapport détaille nos choix techniques, la mise en œuvre du rootkit, ainsi q
 
 (à developper)
 - Reverse shell
-- keylogger
 - misc divice
+- keylogger
 (à developper)
 
 #### 3.3 Scénarios d’accès initial
