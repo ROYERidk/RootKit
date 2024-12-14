@@ -36,6 +36,44 @@ Ce rapport détaille nos choix techniques, la mise en œuvre du rootkit, ainsi q
 - misc divice
 - keylogger
 
+#### 3.1.2 Module Keylogger
+
+#### **Défis de Déploiement et Intégration**
+
+La première version du keylogger a été développée en Python, utilisant la bibliothèque `pynput` pour la capture des événements clavier. Cette approche initiale a été marqué par deux défis techniques majeurs :
+
+**1. Dépendances Python**
+L'environnement Linux From Scratch imposait une intégration précise des bibliothèques :
+- `pynput` : Capture des événements clavier
+- `requests` : Transmission des données
+- `json` : Sérialisation 
+- `threading` : Gestion asynchrone
+
+**2. Contraintes de l'Environnement**
+- Faible consommation de ressources système
+- Indépendance vis-à-vis des configurations spécifiques
+- Possibilité de charger/décharger le module sans impact sur la stabilité du système
+
+#### **Évolution vers un Module Noyau**
+Suite aux discussions avec l'équipe, un recode a été entrepris. Le module a été 'réécrit' en langage C, sous forme de module noyau Linux, intégrant directement le script Python comme une chaîne de caractères.
+
+#### **Fonctionnement Technique**
+Le module noyau encapsule le script Python et l'exécute via l'infrastructure noyau Linux. Les points clés incluent :
+
+- Définition du script Python comme une chaîne de caractères dans le code C
+- Utilisation de call_usermodehelper() pour lancer l'interpréteur Python
+- Configuration d'un environnement minimal pour l'exécution du script
+- Journalisation des événements via printk()
+
+#### **Perspectives d'Évolution**
+
+Axes d'amélioration :
+- Chiffrement des données (Chiffrer les frappes avant de les stocker pour les protéger contre l’accès non autorisé.)
+- Transmission furtive 
+- Optimisation mémoire (Réduire l’empreinte mémoire du keylogger en effaçant les données après leur traitement.)
+- Furtivité (Masquer les fichiers et processus associés au keylogger pour éviter toute détection.)
+- Optimisation de la persistence (envisager de l’améliorer en injectant le code dans des processus système légitimes, comme ceux utilisés pour les mises à jour système ou les processus en cours d'exécution au démarrage)
+
 #### 3.3 Scénarios d’accès initial
 
 Pour la démonstration de notre rootkit nous utilisons un fichier partagé entre la VM Alpine et la machine hôte. Cela mime une intrusion physique qui se conclu en une clé USB branché sur une machine.
