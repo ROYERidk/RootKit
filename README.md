@@ -28,9 +28,11 @@ Sinon
 
 #### 3. Compiler le rootkit
 
-Le rootkit au format *.c* nommé *ldk-kit.c* doit-être placé dans la racine du répertoire
+Le rootkit au format *.c* nommé *hook.c* doit-être placé dans la racine du répertoire
 
-`make default` compilera le rootkit en *.ko* avec le noyau linux de la VM pour qu'il n'y ai pas de problèmes de compatibilités entre la compilation sur notre machine et l'utilisation du module sur notre VM. 
+`make default` compilera le rootkit en *.ko* avec le noyau linux de la VM pour qu'il n'y ai pas de problèmes de compatibilités entre la compilation sur notre machine et l'utilisation du module sur notre VM.
+
+PS : ne pas oublier de modifier l'adresse IP du serveur C2 dans hook.c (on utilise ici une IP privée pour le POC)
 
 #### 4. Creation de l'image disque et lancement de la VM
 
