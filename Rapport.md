@@ -21,22 +21,30 @@ Ce rapport détaille nos choix techniques, la mise en œuvre du rootkit, ainsi q
 ### 2. Organisation du Projet
 #### 2.1 Tableau de répartition des tâches, des rôles et du travail fournis
 
-| Nom     | Tâche                                                                                                                  | Rôle | Travail fournis |
-| ------- | ---------------------------------------------------------------------------------------------------------------------- | ---- | --------------- |
-| Pierre  | Création de l'environnement de developpement, rédaction des parties communes du rapport et création de la présentation |      | %               |
-| Manu    | Création d'un module reverse shell, camouflage et persistance du Rootkit                                               |      | %               |
-| Anthony | Création d'un module de reverse shell, camouflage et persistance du Rootkit                                            |      | %               |
-| Théo    | Création d'un module de keylogger                                                                                      |      | %               |
+| Nom     | Tâche                                                                                                                  | Travail fournis |
+| ------- | ---------------------------------------------------------------------------------------------------------------------- | --------------- |
+| Pierre  | Création de l'environnement de developpement, rédaction des parties communes du rapport                                | %     28.33     |
+| Manu    | Création d'un module reverse shell, camouflage et persistance du Rootkit                                               | %     28.33     |
+| Anthony | Création d'un module de misc device et aide à la création d'un module de reverse shell, camouflage du Rootkit          | %     28.33     |
+| Théo    | Création d'un module de keylogger                                                                                      | %     15        |
 
 ### 3. Concepts et Architecture du Rootkit  
 #### 3.1 Fonctionnalités
 
-(à developper)
-- Reverse shell
-- misc divice
-- keylogger
+Le rootkit correspond à un module que l'on va charger sur la machine cible. Le rootkit que nous avons implémenté est basé sur l'utilisation de kprobes pour effectuer un hook de la fonction do_sys_openat2. Nous avons coder le module de tel sorte qu'un reverse shell soit initié vers un serveur C2 dès lors qu'un fichier est lu via la commande cat.
 
-#### 3.1.2 Module Keylogger
+#### 3.1.2 Module misc device
+		
+Un misc device est un type de périphérique dans le noyau Linux.C'est est un périphériques de type caractère, il permet de faire une escalade de privilège après avoir recu une cléfs d'activation de la part d'un autre module.
+
+
+#### **Perspectives d'Évolution**
+Amélioration de la furtivité : Optimiser le camouflage des processus, fichiers et répertoires via des techniques avancées de hooking (getdents, /proc, etc.)
+
+Gestion conditionnelle des privilèges : Intégrer une élévation granulaire ou conditionnée à des critères précis.
+Compatibilité multi-noyaux : Adapter le module aux noyaux récents.
+
+#### 3.1.3 Module Keylogger
 
 #### **Défis de Déploiement et Intégration**
 
@@ -105,10 +113,22 @@ La vm est lancée à l'aide de *make vm* qui appelle *make disk* puis le script 
 
 ### 5. **Conception Technique**  
 #### 5.1 Techniques de camouflage  
-Manu ? Anthony ?
+	Plusieurs techniques de camouflage ont été utilisées dans notre tentative d’obfuscation des répertoires et des processus. Voici un récapitulatif des approches testées :
+
+## Suppression de structures liées dans les listes du noyau
+Nous avons utilisé la fonction list_del(&mod) pour supprimer des modules du noyau Linux afin de cacher leur présence dans les structures internes. Cette méthode est couramment utilisée dans le développement de rootkits pour retirer un module de la liste des modules chargés (/proc/modules).
+
+## Suppression d’objets kobject
+L’appel à kobject_del a été employé pour supprimer des objets dans la hiérarchie des kobject utilisé pour masquer des fichiers ou des entrées dans /sys. Bien que cela permette 
+
+Hooking de la fonction getdents
+Nous avons tenté de détourner la fonction système getdents, qui est responsable de fournir la liste des entrées d’un répertoire, pour filtrer certaines entrées et ainsi cacher des répertoires ou des fichiers spécifiques. L’objectif était de camoufler les répertoires créés pour le fonctionnement du module. Cependant, l'implémentation de ce hook n’a pas été concluante.
+
+Masquage des processus
+Une technique similaire a été appliquée au niveau des processus, en tentant de manipuler les appels systèmes liés aux listes de processus getdents appliqué à /proc ou en manipulant directement les structures task_struct via des hooks dans la table sys_call_table. 
 
 #### 5.2 Mécanisme de persistance
-Manu ? Anthony ?
+Création d'un fichier de configuration d'un service pseudo légitime dans /etc/init.d/network-autostart qui va insérer le module infecté lors du démarrage de la machine.
 
 ### 6. **Limites et Améliorations Potentielles**  
 #### 6.1 Problèmes rencontrés et solutions apportées 
@@ -117,9 +137,13 @@ nous avons démarrer notre projet en utilisant une VM busybox. Mais, nous nous s
 
 Aucun membres du groupe n'avais de notion avant le cours de conception d'un rootkit et plusieurs membres ne sont pas très à l'aise en programmation alors nous avons dû nous adapter. Nous avons débuté ce projet par l'étude de rootkit déjà existant ainsi que leur fonctionnement.
 
+
+
 #### 6.2 Perspectives d’amélioration
 
-Nous sommes conscient que le module de reverse shell est visible de *tel ou tel manière* et nous aurions pu le camoufler de *tel manière*.
+- Persistance du Rootkit : Nous avons manqué de temps pour la persistance du rootkit, elle n'est pas parfait et n'est pas comme nous l'aurions voulu. C'est pour cela que nous pourrions l'améliorer.
+- Centralisation des modules : Nous n'avons pas réussi à centralisé tous nos modules en un seul Rootkit.
+- La dissimulation du Rootkit : La discretion du Rootkit est améliorable.
 
 ### 7 Informations sur les comptes (root et utilisateur)
 Nous avons deux utilisateur, un administrateur *root* avec tous les droits et un utilisateur *user* 
@@ -138,7 +162,13 @@ Dans un premier temps nous pensions compiler les modules sur notre machine de tr
 Nous avons voulu utiliser f_trace_helper, malheuresement nous nous sommes rendu compte que dans les versions récentes de Linux ce n'est plus possible. En effet, cela à été retiré/modifier pour des raisons de sécurité.
 Après quelques recherches nous avons trouvé kprobe qui permet de hook relativement facilement des appels systèmes.
 
-### 8 **Bilan du projet**
+### 8.3 kprobes
+Plus spécifiquement des difficultés, on été rencontré sur le hook du syscall getdents. Dans le post handler nous ne pouvions pas récupérer le retour dans la fonction avec a fonction regs_return_value() ni en la récupérant directement depuis le registre rax.
+
+#### 8.4 Initiation au développement d'un Rootkit
+Aucun membre de notre groupe n'avait de notion de confection d'un Rootkit c'est pour cela que notre difficulté principale à été de comprendre et imaginer notre propre Rootkit.
+
+### 9 **Bilan du projet**
 
 Le développement de notre rootkit Linux s’est avéré être un défi technique et pédagogique enrichissant. Nous avons réussi à concevoir un rootkit fonctionnel répondant aux exigences fixées. De plus, ce projet nous a permis d'approfondir nos connaissances sur les mécanismes internes du noyau Linux.
 
