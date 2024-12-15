@@ -44,12 +44,10 @@ PS : ne pas oublier de modifier l'adresse IP du serveur C2 dans hook.c (on utili
 root:root
 user:user
 
-#### 6. Dossier partagé HOST/VM
+#### 6. Utilisation du rootkit
 
-Pour pouvoir simuler l'injection d'un rootkit nous utilisons un fichié partagé entre notre machine et notre vm.
+Nous avons entièrement automatisé l'injection et la persistance du rootkit lors de la création de l'image disque, aucune action n'est donc nécessaire pour charger le module.
+Le principe de déclenchement de ce rootkit est de lire un fichier quelconque via la commande cat pour que le reverse shell s'exécute, par exemple :
 
-1. mettre notre rootkit dans `/tmp/qemu-share` pour l'envoyer sur la vm
-2. lancer la VM
-3. `mkdir /shared`
-4. `mount -t 9p -o trans=virtio share /shared`
-5. insmod /shared/ldk-kit.ko
+`cat /etc/passwd` sur la machine cible
+`nc -lvp 1234` sur le serveur C2
