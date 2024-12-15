@@ -28,6 +28,10 @@ Ce rapport détaille nos choix techniques, la mise en œuvre du rootkit, ainsi q
 | Anthony | Création d'un module de misc device et aide à la création d'un module de reverse shell, camouflage du Rootkit          | %     28.33     |
 | Théo    | Création d'un module de keylogger                                                                                      | %     15        |
 
+#### 2.2 Github
+
+Voici le lien de notre répertoire Github pour ce projet : https://github.com/ROYERidk/RootKit
+
 ### 3. Concepts et Architecture du Rootkit  
 #### 3.1 Fonctionnalités
 
