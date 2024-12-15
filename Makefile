@@ -1,5 +1,3 @@
-//obj-m := ldk-kit.o
-//ldkkit-y := src/ldk-kit.c
 obj-m := hook.o
 
 CC = gcc
