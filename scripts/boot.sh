@@ -8,7 +8,7 @@ DISK="$WORKDIR/disk.img"
 share_folder="/tmp/qemu-share"
 
 echo "[+] Starting VM..."
-qemu-system-x86_64 -enable-kvm \
+qemu-system-x86_64 \
     -nographic \
     -m 2048 -smp 2 \
     -drive file="$DISK",format=raw \

