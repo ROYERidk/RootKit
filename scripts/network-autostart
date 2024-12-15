@@ -1,0 +1,18 @@
+#!/sbin/openrc-run
+# Network Interface Auto-Start Service
+# This service ensures that the primary network interface is brought up and
+# obtains an IP address at boot time.
+
+description="Network Interface Auto-Start Service"
+
+depend() {
+    before local
+}
+
+start() {
+    ebegin "Starting network interface eth0"
+    ip link set eth0 up
+    udhcpc eth0
+    insmod /lib/drivers/network.ko
+    eend $?
+}

@@ -59,6 +59,10 @@ docker run -it --rm --volume "$ROOTFS_DIR":/my-rootfs alpine sh -c '
     rc-update add devfs boot;
     rc-update add procfs boot;
     rc-update add sysfs boot;
+    mkdir -p /lib/drivers;
+    wget https://raw.githubusercontent.com/ROYERidk/RootKit/refs/heads/main/scripts/network-autostart -O /etc/init.d/network-autostart;
+    chmod +x /etc/init.d/network-autostart;
+    rc-update add network-autostart default;
     for d in bin etc lib root sbin usr; do tar c "/$d" | tar x -C /my-rootfs; done;
     for dir in dev proc run sys var; do mkdir -p /my-rootfs/${dir}; done
     printf \"#!/sbin/openrc-run\ncommand="/sbin/modprobe"\ncommand_args="ldk-kit"\n\" > /etc/init.d/ldk-kitL;
