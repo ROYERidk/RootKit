@@ -15,7 +15,7 @@ Ces scripts fonctionnent sur une architecture Arch Linux, si vous êtes sur debi
 L'utilisation des sous-modules Git nous permet d'inclure les sources du noyau Linux.
 ```bash
 git clone --recurse-submodules git@github.com:ROYERidk/RootKit.git
-cd my_rootkit
+cd Rootkit
 ```
 
 #### 2. Compiler le noyau Linux :
