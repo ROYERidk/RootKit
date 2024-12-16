@@ -26,7 +26,7 @@ Si c'est la première fois:
 Sinon
   - make Kernel
 
-#### 3. Compiler le rootkit
+#### 3. Compiler le rootkit (Optionnel)
 
 Le rootkit au format *.c* nommé *hook.c* doit-être placé dans la racine du répertoire
 
